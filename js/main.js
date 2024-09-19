@@ -56,17 +56,7 @@
     }, {offset: '80%'});
 
 
-    // Portfolio isotope and filter
-    var portfolioIsotope = $('.portfolio-container').isotope({
-        itemSelector: '.portfolio-item',
-        layoutMode: 'fitRows'
-    });
-    $('#portfolio-flters li').on('click', function () {
-        $("#portfolio-flters li").removeClass('active');
-        $(this).addClass('active');
 
-        portfolioIsotope.isotope({filter: $(this).data('filter')});
-    });
 
 
     // Testimonials carousel
@@ -92,27 +82,56 @@
         return false;
     });
 
-    
+    // Portfolio isotope and filter
+    var portfolioIsotope = $('.portfolio-container').isotope({
+        itemSelector: '.portfolio-item',
+        layoutMode: 'fitRows'
+    });
+    $('#portfolio-flters li').on('click', function () {
+        $("#portfolio-flters li").removeClass('active');
+        $(this).addClass('active');
+
+        portfolioIsotope.isotope({filter: $(this).data('filter')});
+    });
 
     // Video controls on hover and click
-    $('.portfolio-video').each(function () {
-        var video = $(this)[0];
+    document.querySelectorAll('.card').forEach(card => {
+        const video = card.querySelector('.portfolio-video');
+        
+        if (video) {
+            // Play the video when hovering
+            card.addEventListener('mouseenter', function() {
+                video.play();
+            });
 
-        // Show controls on hover
-        $(video).on('mouseenter', function () {
-            video.setAttribute('controls', 'controls');
-        });
+            card.addEventListener('mouseleave', function() {
+                video.pause();
+                video.currentTime = 0; // Reset video when not hovering
+            });
+        }
 
-        // Hide controls on mouse leave
-        $(video).on('mouseleave', function () {
-            video.removeAttribute('controls');
-        });
-
-        // Show controls when video is clicked
-        $(video).on('click', function () {
-            video.setAttribute('controls', 'controls');
+        // Flip the card when clicked
+        card.addEventListener('click', function() {
+            card.classList.toggle('flip');
         });
     });
+
+    // Handle the download and GitHub links
+    document.querySelectorAll('.card-back .btn').forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.stopPropagation(); // Prevent the card flip when clicking icons
+
+            const target = button.getAttribute('data-target');
+            if (target === 'apk') {
+                const apkLink = button.getAttribute('data-apk-link');
+                window.open(apkLink,'_blank'); // Handle APK download for this specific card
+            } else if (target === 'github') {
+                const githubLink = button.getAttribute('data-github-link');
+                window.open(githubLink, '_blank'); // Open GitHub link in a new tab for this specific card
+            }
+        });
+    });
+
 
 })(jQuery);
 

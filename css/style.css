@@ -192,52 +192,79 @@
 
 /*PortFolio Card Css */
 
-/* Hide video controls by default */
-.portfolio-video::-webkit-media-controls {
-  display: none !important; /* For browsers with webkit */
+/* Portfolio Card CSS */
+
+/* Card structure */
+.card-container {
+  perspective: 1000px;
 }
 
-/* Show controls when hovered */
-.portfolio-video:hover::-webkit-media-controls {
-  display: flex !important; /* Show controls on hover */
-}
-
-/* Additional fallback to ensure controls hide when not hovered */
-.portfolio-video {
+.card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
   cursor: pointer;
+}
+
+.card-front, .card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Front side styling */
+.card-front {
+  background: var(--secondary);
+}
+
+.card-back {
+  background: var(--secondary);
+  transform: rotateY(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card.flip {
+  transform: rotateY(180deg);
+}
+
+/* Video hover play controls */
+.portfolio-video {
+  width: 100%;
+  height: 100%;
   transition: all 0.3s ease-in-out;
+  object-fit: cover;
 }
 
 .portfolio-video:hover {
+  cursor: pointer;
   outline: none;
+  opacity: 0.9;
 }
 
-.portfolio-item .portfolio-btn {
-  position: absolute;
-  width: 0;
-  height: 0;
-  top: 50%;
-  left: 50%;
-  font-size: 90px;
-  background: rgba(44, 62, 80, .9);
-  opacity: 0;
-  transition: .5s;
+/* Button on the back side */
+.back-content .btn {
+  font-size: 18px;
+  padding: 10px 20px;
 }
 
-.portfolio-item:hover .portfolio-btn {
-  opacity: 1;
-  width: calc(100% - 60px);
-  height: calc(100% - 60px);
-  top: 30px;
-  left: 30px;
+.portfolio-btn-icons .btn {
+  font-size: 18px;
+  padding: 10px 20px;
 }
 
-.portfolio-item i {
-  opacity: 0;
-  transition: .3s;
-  transition-delay: .3s;
+/* Make the flip happen on click */
+.card-container .card.flip {
+  transform: rotateY(180deg);
 }
 
-.portfolio-item:hover i {
-  opacity: 1;
+.card-container{
+  height: 250px;
 }
