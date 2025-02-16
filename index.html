@@ -322,7 +322,7 @@
                             <div class="d-flex align-items-center">
                                 <img class="img-fluid" src="img/testimonial-1.jpg" style="width: 60px; height: 60px;">
                                 <div class="ps-3">
-                                    <p class="text-primary fs-5 mb-1">Client Name</p>
+                                    <p class="text-primary fs-5 mb-1">Gavurav</p>
                                     <i>Profession</i>
                                 </div>
                             </div>
@@ -332,43 +332,111 @@
                 <!-- Testimonial End -->
 
                 <!-- Contact Start -->
-                <form>
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <input type="text" class="form-control border-0 bg-secondary" id="name"
-                                    placeholder="Your Name">
-                                <label for="name">Your Name</label>
+                <section>
+                    <form id="contactForm" action="https://formsubmit.co/priyanshu07893@gmail.com" method="POST">
+                        <!-- Hidden fields for customization -->
+                        <input type="hidden" name="_captcha" value="true">
+                        <input type="hidden" name="_subject" value="New Contact Form Submission">
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control border-0 bg-secondary" id="name" name="name"
+                                        placeholder="Your Name" required>
+                                    <label for="name">Your Name</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="email" class="form-control border-0 bg-secondary" id="email"
+                                        name="email" placeholder="Your Email" required>
+                                    <label for="email">Your Email</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control border-0 bg-secondary" id="subject"
+                                        name="subject" placeholder="Subject" required>
+                                    <label for="subject">Subject</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <textarea class="form-control border-0 bg-secondary" id="message" name="message"
+                                        placeholder="Leave a message here" style="height: 200px" required></textarea>
+                                    <label for="message">Message</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button id="submitButton" class="btn btn-primary w-100 py-3" type="submit">
+                                    <span id="buttonText">Send Message</span>
+                                    <span id="loader" class="spinner-border spinner-border-sm d-none"></span>
+                                </button>
+                            </div>
+                            <div class="col-12">
+                                <div id="formMessage" class="alert alert-success d-none mt-3">✅ Submitted successfully!
+                                    We will connect with you soon.</div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <input type="email" class="form-control border-0 bg-secondary" id="email"
-                                    placeholder="Your Email">
-                                <label for="email">Your Email</label>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-floating">
-                                <input type="text" class="form-control border-0 bg-secondary" id="subject"
-                                    placeholder="Subject">
-                                <label for="subject">Subject</label>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-floating">
-                                <textarea class="form-control border-0 bg-secondary" placeholder="Leave a message here"
-                                    id="message" style="height: 200px"></textarea>
-                                <label for="message">Message</label>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <button class="btn btn-primary w-100 py-3" type="submit">Send Message</button>
-                        </div>
-                    </div>
-                </form>
+                    </form>
                 </section>
                 <!-- Contact End -->
+
+                <!-- JavaScript to Handle Form Submission with Loader -->
+                <script>
+                    document.getElementById("contactForm").addEventListener("submit", function (event) {
+                        event.preventDefault(); // Prevent default form submission
+
+                        let formData = new FormData(this);
+                        let submitButton = document.getElementById("submitButton");
+                        let buttonText = document.getElementById("buttonText");
+                        let loader = document.getElementById("loader");
+                        let formMessage = document.getElementById("formMessage");
+
+                        // Show loader and disable button
+                        submitButton.disabled = true;
+                        buttonText.classList.add("d-none");
+                        loader.classList.remove("d-none");
+
+                        fetch(this.action, {
+                            method: "POST",
+                            body: formData
+                        }).then(response => {
+                            if (response.ok) {
+                                formMessage.classList.remove("d-none");
+                                this.reset(); // Reset form fields
+                            }
+                        }).catch(error => console.error("Error:", error))
+                            .finally(() => {
+                                // Hide loader and re-enable button after submission
+                                submitButton.disabled = false;
+                                buttonText.classList.remove("d-none");
+                                loader.classList.add("d-none");
+                            });
+                    });
+                </script>
+
+
+                <!-- JavaScript to Handle Form Submission -->
+                <script>
+                    document.getElementById("contactForm").addEventListener("submit", function (event) {
+                        event.preventDefault(); // Prevents default form submission
+
+                        let formData = new FormData(this);
+
+                        fetch(this.action, {
+                            method: "POST",
+                            body: formData
+                        }).then(response => {
+                            if (response.ok) {
+                                document.getElementById("formMessage").classList.remove("d-none");
+                                this.reset(); // Reset the form fields after successful submission
+                            }
+                        }).catch(error => console.error("Error:", error));
+                    });
+                </script>
+
+
 
                 <!-- Footer Start -->
                 <section class="wow fadeIn" data-wow-delay="0.1s">
@@ -397,8 +465,6 @@
             </div>
         </div>
     </div>
-
-
     <!-- Back to Top -->
     <a href="#" class="back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
@@ -413,10 +479,6 @@
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
     <script src="lib/isotope/isotope.pkgd.min.js"></script>
     <script src="lib/lightbox/js/lightbox.min.js"></script>
-
-    <!-- Contact Javascript File -->
-    <script src="mail/jqBootstrapValidation.min.js"></script>
-    <script src="mail/contact.js"></script>
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
