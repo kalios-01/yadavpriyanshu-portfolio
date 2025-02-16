@@ -192,79 +192,112 @@
 
 /*PortFolio Card Css */
 
-/* Portfolio Card CSS */
-
-/* Card structure */
+/* Portfolio Card Container */
 .card-container {
   perspective: 1000px;
+  height: 400px;
+  width: 180px; /* Adjust as needed */
+  border-radius: 15px; /* Ensuring rounded corners */
+  aspect-ratio: 9 / 16;
+  overflow: visible; /* Prevents overflow issues */
 }
 
+/* Card Structure */
 .card {
   width: 100%;
   height: 100%;
   position: relative;
-  transition: transform 0.6s;
+  transition: transform 0.6s ease-in-out;
   transform-style: preserve-3d;
   cursor: pointer;
+  border-radius: 15px; /* Matches container */
 }
 
+/* Card Front & Back */
 .card-front, .card-back {
   position: absolute;
   width: 100%;
   height: 100%;
-  backface-visibility: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 15px; /* Rounded corners */
+  backface-visibility: hidden; /* Ensures smooth flipping */
 }
 
-/* Front side styling */
+/* Front Side */
 .card-front {
   background: var(--secondary);
+  border: 3px solid white; /* White border */
+  border-radius: 15px;
+  overflow: hidden; /* Ensures video doesn’t overflow */
+  position: relative;
+  z-index: 2; /* Ensures it stays on top when not flipped */
 }
 
+/* Logo Overlay (Now Same Size as Video) */
+.card-front .video-logo {
+  position: absolute;
+  width: 100%;  /* Same width as video */
+  height: 100%; /* Same height as video */
+  object-fit: cover; /* Ensures proper scaling */
+  z-index: 2;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Video (Initially Hidden) */
+.card-front .portfolio-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Video Hover Effect */
+.card-front:hover .video-logo {
+  opacity: 0; /* Hide logo */
+}
+
+.card-front:hover .portfolio-video {
+  opacity: 1; /* Show video */
+}
+
+/* Back Side */
 .card-back {
   background: var(--secondary);
   transform: rotateY(180deg);
+  border: 3px solid white; /* White border */
+  border-radius: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1; /* Initially behind the front */
+  pointer-events: auto; /* Ensure clicks register */
 }
 
+/* Hide any accidental video on the back */
+.card-back .portfolio-video {
+  display: none;
+}
+
+/* Flip Animation */
 .card.flip {
   transform: rotateY(180deg);
+  z-index: 3; /* Bring to the front when flipped */
 }
 
-/* Video hover play controls */
-.portfolio-video {
-  width: 100%;
-  height: 100%;
-  transition: all 0.3s ease-in-out;
-  object-fit: cover;
+/* Prevent Front Side from Blocking Clicks when Flipped */
+.card.flip .card-front {
+  pointer-events: none;
 }
 
-.portfolio-video:hover {
-  cursor: pointer;
-  outline: none;
-  opacity: 0.9;
-}
-
-/* Button on the back side */
-.back-content .btn {
+/* Button Styling */
+.back-content .btn, .portfolio-btn-icons .btn {
   font-size: 18px;
   padding: 10px 20px;
-}
-
-.portfolio-btn-icons .btn {
-  font-size: 18px;
-  padding: 10px 20px;
-}
-
-/* Make the flip happen on click */
-.card-container .card.flip {
-  transform: rotateY(180deg);
-}
-
-.card-container{
-  height: 250px;
+  border-radius: 5px;
+  z-index: 4; /* Ensures buttons are clickable */
+  pointer-events: auto;
+  position: relative;
 }
